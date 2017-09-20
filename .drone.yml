@@ -1,0 +1,30 @@
+workspace:
+  base: /build
+  path: src
+
+clone:
+  git:
+    image: plugins/git:1
+    depth: 50
+    tags: true
+
+pipeline:
+  docker:
+    image: plugins/docker:17.05
+    pull: true
+    secrets: [ docker_username, docker_password ]
+    repo: curx/hello-docker-world
+    tags: [ 'latest' ]
+    when:
+      event: [ push ]
+      branch: [ master ]
+
+  docker:
+    image: plugins/docker:17.05
+    pull: true
+    secrets: [ docker_username, docker_password ]
+    repo: curx/hello-docker-world
+    tags: [ '${DRONE_TAG##v}' ]
+    when:
+      event: [ tag ]
+      branch: [ refs/tags/* ]
