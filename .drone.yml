@@ -28,3 +28,14 @@ pipeline:
     when:
       event: [ tag ]
       branch: [ refs/tags/* ]
+
+  docker:
+    image: plugins/docker:17.05
+    pull: true
+    secrets: [ docker_username, docker_password ]
+    repo: sys3/hello-docker-world
+    tags: [ 'latest' ]
+    when:
+      event: [ push ]
+      branch: [ master ]
+
